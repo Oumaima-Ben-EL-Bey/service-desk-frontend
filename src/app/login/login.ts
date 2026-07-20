@@ -1,9 +1,27 @@
-import { Component } from '@angular/core';
-
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {}
+export class Login {
+  private http = inject(HttpClient);
+
+  email = '';
+  password = '';
+
+  onLogin() {
+    this.http
+      .post('https://service-desk-api.fly.dev/login', {
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe((response) => {
+        console.log('Response from backend:', response);
+      });
+
+  }
+}
