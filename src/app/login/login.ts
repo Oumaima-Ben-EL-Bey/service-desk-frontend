@@ -15,12 +15,12 @@ export class Login {
 
   onLogin() {
     this.http
-      .post('https://service-desk-api.fly.dev/login', {
+      .post<{ token: string }>('https://service-desk-api.fly.dev/login', {
         email: this.email,
         password: this.password,
       })
       .subscribe((response) => {
-        console.log('Response from backend:', response);
+        localStorage.setItem('token', response.token);
       });
 
   }
