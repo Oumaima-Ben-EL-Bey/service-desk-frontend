@@ -1,9 +1,11 @@
-@for (ticket of tickets; track ticket.id) {
+@for (ticket of tickets(); track ticket.id) {
 <div>
   <h1>{{ ticket.title }}</h1>
   <p>{{ ticket.description }}</p>
   <span>{{ ticket.status }}</span> - <span>{{ ticket.category }}
 </span>
+  <p>Requested by {{ userName(ticket.requesterId) }}</p>
+
 </div>
 
 }
