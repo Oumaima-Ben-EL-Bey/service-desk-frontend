@@ -1,11 +1,21 @@
+<div class="tickets-page">
 @for (ticket of tickets(); track ticket.id) {
-<div>
-  <h1>{{ ticket.title }}</h1>
-  <p>{{ ticket.description }}</p>
-  <span>{{ ticket.status }}</span> - <span>{{ ticket.category }}
-</span>
-  <p>Requested by {{ userName(ticket.requesterId) }}</p>
-
-</div>
-
+<article class="ticket">
+  <div class="ticket-main">
+    <h3 class="ticket-title">{{ ticket.title }}</h3>
+    <p class="ticket-desc">{{ ticket.description }}</p>
+    <p class="ticket-meta">Requested by {{ userName(ticket.requesterId) }}</p>
+  </div>
+  <div class="ticket-side">
+    <span class="status">
+        <img class="status-icon" [src]="statusIcon(ticket.status)" alt="" />
+        {{ ticket.status }}
+      </span>
+    <span [class]="'pill cat-' + ticket.category.toLowerCase()">
+      <img class="category-icon" [src]="categoryIcon(ticket.category)" alt="" />
+      {{ ticket.category }}
+    </span>
+  </div>
+</article>
 }
+</div>

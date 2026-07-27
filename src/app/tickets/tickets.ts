@@ -34,6 +34,13 @@ export class Tickets implements OnInit {
     return user ? user.fullName : '';
   }
 
+  statusIcon(status: string): string {
+    return `/status/dot-${status.toLowerCase().replace('_', '-')}.svg`;
+  }
+  categoryIcon(category: string): string {
+    return `/icons/icon-${category.toLowerCase()}.svg`;
+}
+
   ngOnInit() {
     this.http
       .get<Ticket[]>('https://service-desk-api.fly.dev/tickets', {

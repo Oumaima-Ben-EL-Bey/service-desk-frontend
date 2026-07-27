@@ -1,1 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  /* Brand */
+  --color-accent: #7C3AED;
+  --color-accent-strong: #5B21B6;
+  --color-accent-soft: #EDE9FE;
+
+  /* Neutrals */
+  --color-ink: #111827;
+  --color-muted: #6B7280;
+  --color-surface: #FFFFFF;
+  --color-page: #F1F5F9;
+  --color-border: #E5E7EB;
+
+  /* Type */
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Status */
+  --color-status-new: #7C3AED;
+  --color-status-progress: #D97706;
+  --color-status-resolved: #059669;
+  --color-status-closed: #9CA3AF;
+
+  /* Categories */
+  --color-network: #1E40AF;   --color-network-soft: #DBEAFE;
+  --color-hardware: #155E75;  --color-hardware-soft: #CFFAFE;
+  --color-access: #9D174D;    --color-access-soft: #FCE7F3;
+  --color-software: #B91C1C;  --color-software-soft: #FEE2E2;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: var(--color-page);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-heading);
+}
+
+
