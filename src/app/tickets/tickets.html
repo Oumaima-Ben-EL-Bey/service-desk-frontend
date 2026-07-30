@@ -30,8 +30,8 @@
   </div>
 
   @for (ticket of sortedTickets(); track ticket.id)  {
-<article class="ticket">
-  <div class="ticket-main">
+  <article class="ticket" [routerLink]="['/tickets', ticket.id]">
+    <div class="ticket-main">
     <h3 class="ticket-title">{{ ticket.title }}</h3>
     <p class="ticket-desc">{{ ticket.description }}</p>
     <p class="ticket-meta">Requested by {{ userName(ticket.requesterId) }}</p>

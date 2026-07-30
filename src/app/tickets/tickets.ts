@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';import {HttpClient } from '@angular/common/http'
 import { Auth } from '../auth';
+import { RouterLink } from '@angular/router';
 
 interface Ticket {
   id: number;
@@ -17,7 +18,7 @@ interface User {
 
 @Component({
   selector: 'app-tickets',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './tickets.html',
   styleUrl: './tickets.css',
 })
@@ -62,11 +63,16 @@ export class Tickets implements OnInit {
 
   statusColor(status: string): string {
     switch (status) {
-      case 'NEW':         return 'var(--color-status-new)';
-      case 'IN_PROGRESS': return 'var(--color-status-progress)';
-      case 'RESOLVED':    return 'var(--color-status-resolved)';
-      case 'CLOSED':      return 'var(--color-status-closed)';
-      default:            return 'var(--color-ink)';
+      case 'NEW':
+        return 'var(--color-status-new)';
+      case 'IN_PROGRESS':
+        return 'var(--color-status-progress)';
+      case 'RESOLVED':
+        return 'var(--color-status-resolved)';
+      case 'CLOSED':
+        return 'var(--color-status-closed)';
+      default:
+        return 'var(--color-ink)';
     }
   }
 
