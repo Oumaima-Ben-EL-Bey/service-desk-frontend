@@ -28,6 +28,7 @@ export class Tickets implements OnInit {
 
   tickets = signal<Ticket[]>([]);
   users = signal<User[]>([]);
+  roles = signal<string[]>([]);
 
   userName(id: number): string {
     const user = this.users().find((u) => u.id === id);
@@ -39,7 +40,7 @@ export class Tickets implements OnInit {
   }
   categoryIcon(category: string): string {
     return `/icons/icon-${category.toLowerCase()}.svg`;
-}
+  }
 
   ngOnInit() {
     this.http
@@ -57,5 +58,9 @@ export class Tickets implements OnInit {
       .subscribe((response) => {
         this.users.set(response);
       });
+
+    this.auth.getMe().subscribe((me) => {
+      this.roles.set(me.roles);
+    });
   }
 }
