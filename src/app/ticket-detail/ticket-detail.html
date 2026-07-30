@@ -5,8 +5,18 @@
   <p class="detail-meta">Status: {{ t.status }}</p>
   <p class="detail-meta">Category: {{ t.category }}</p>
   <p class="detail-meta">Requested by: {{ t.requesterId }}</p>
+  <p class="detail-meta">Assigned to: {{ t.assigneeId }}</p>
 </article>
-
+<div class="detail-actions">
+  @if (auth.isAgent()) {
+  <button type="button" (click)="claim()">Claim</button>
+  }
+  @if (auth.isAdmin() || auth.isAgent()) {
+  @for (target of allowedStatuses(); track target) {
+  <button type="button" (click)="changeStatus(target)">Mark {{ target }}</button>
+  }
+  }
+</div>
 <section class="comment-thread">
   <h2 class="thread-heading">Comments</h2>
   @for (comment of comments(); track comment.id) {

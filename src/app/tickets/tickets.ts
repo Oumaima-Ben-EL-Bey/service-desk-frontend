@@ -1,4 +1,5 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';import {HttpClient } from '@angular/common/http'
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Auth } from '../auth';
 import { RouterLink } from '@angular/router';
 
@@ -24,11 +25,10 @@ interface User {
 })
 export class Tickets implements OnInit {
   private http = inject(HttpClient);
-  private auth = inject(Auth);
+  protected auth = inject(Auth);
 
   tickets = signal<Ticket[]>([]);
   users = signal<User[]>([]);
-  roles = signal<string[]>([]);
   statusFilters = ['ALL', 'NEW', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];
   sortDirection = signal<'asc' | 'desc'>('asc');
   selectedStatus = signal<string>('ALL');
@@ -100,8 +100,6 @@ export class Tickets implements OnInit {
         this.users.set(response);
       });
 
-    this.auth.getMe().subscribe((me) => {
-      this.roles.set(me.roles);
-    });
+    this.auth.loadMe();
   }
 }
