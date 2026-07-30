@@ -1,12 +1,35 @@
 <div class="tickets-page">
-  @if (roles().includes('ADMIN')) {
-  <h1 class="tickets-heading">All tickets</h1>
-  } @else if (roles().includes('AGENT')) {
-  <h1 class="tickets-heading">Your team's tickets</h1>
-  } @else {
-  <h1 class="tickets-heading">Your tickets</h1>
-  }
-  @for (ticket of tickets(); track ticket.id) {
+  <div class="tickets-header">
+    @if (roles().includes('ADMIN')) {
+    <h1 class="tickets-heading">All tickets</h1>
+    } @else if (roles().includes('AGENT')) {
+    <h1 class="tickets-heading">Your team's tickets</h1>
+    } @else {
+    <h1 class="tickets-heading">Your tickets</h1>
+    }
+    <button
+      class="sort-toggle"
+      (click)="sortDirection.set(sortDirection() === 'asc' ? 'desc' : 'asc')">
+      Sort: <span class="sort-value">Title {{ sortDirection() === 'asc' ? 'A-Z' : 'Z-A' }} &#9662;</span>
+    </button>
+  </div>
+  <div class="filter-bar">
+    @for (status of statusFilters; track status) {
+    <button
+      class="control-btn"
+      [style.--chip-color]="statusColor(status)"
+      [class.active]="selectedStatus() === status"
+      (click)="selectedStatus.set(status)">
+      @if (status !== 'ALL') {
+      <img class="chip-dot" [src]="statusIcon(status)" alt="" />
+      }
+      {{ status }}
+      <span class="chip-count">{{ countFor(status) }}</span>
+    </button>
+    }
+  </div>
+
+  @for (ticket of sortedTickets(); track ticket.id)  {
 <article class="ticket">
   <div class="ticket-main">
     <h3 class="ticket-title">{{ ticket.title }}</h3>
