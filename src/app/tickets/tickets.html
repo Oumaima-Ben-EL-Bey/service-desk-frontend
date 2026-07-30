@@ -1,8 +1,8 @@
 <div class="tickets-page">
   <div class="tickets-header">
-    @if (roles().includes('ADMIN')) {
+    @if (auth.isAdmin()) {
     <h1 class="tickets-heading">All tickets</h1>
-    } @else if (roles().includes('AGENT')) {
+    } @else if (auth.isAgent()) {
     <h1 class="tickets-heading">Your team's tickets</h1>
     } @else {
     <h1 class="tickets-heading">Your tickets</h1>
