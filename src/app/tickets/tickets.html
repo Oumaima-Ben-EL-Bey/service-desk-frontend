@@ -1,5 +1,12 @@
 <div class="tickets-page">
-@for (ticket of tickets(); track ticket.id) {
+  @if (roles().includes('ADMIN')) {
+  <h1 class="tickets-heading">All tickets</h1>
+  } @else if (roles().includes('AGENT')) {
+  <h1 class="tickets-heading">Your team's tickets</h1>
+  } @else {
+  <h1 class="tickets-heading">Your tickets</h1>
+  }
+  @for (ticket of tickets(); track ticket.id) {
 <article class="ticket">
   <div class="ticket-main">
     <h3 class="ticket-title">{{ ticket.title }}</h3>
