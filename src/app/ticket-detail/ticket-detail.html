@@ -6,6 +6,23 @@
   <p class="detail-meta">Category: {{ t.category }}</p>
   <p class="detail-meta">Requested by: {{ t.requesterId }}</p>
 </article>
+
+<section class="comment-thread">
+  <h2 class="thread-heading">Comments</h2>
+  @for (comment of comments(); track comment.id) {
+  <article class="comment">
+    <p class="comment-body">{{ comment.body }}</p>
+    <p class="comment-meta">By {{ comment.authorId }} · {{ comment.createdAt }}</p>
+  </article>
+  } @empty {
+  <p class="comment-empty">No comments yet.</p>
+  }
+</section>
+
+<form (ngSubmit)="addComment()">
+  <textarea [(ngModel)]="newComment" name="newComment" placeholder="Write a comment…"></textarea>
+  <button type="submit">Send</button>
+</form>
 } @else {
 <p class="detail-loading">Loading…</p>
 }
