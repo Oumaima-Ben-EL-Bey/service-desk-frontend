@@ -3,7 +3,7 @@
     @if (auth.isAdmin()) {
       <h1 class="tickets-heading">All tickets</h1>
     } @else if (auth.isAgent()) {
-      <h1 class="tickets-heading">Your team's tickets</h1>
+    <h1 class="tickets-heading">{{ teamHeading() }}</h1>
     } @else {
       <h1 class="tickets-heading">Your tickets</h1>
     }

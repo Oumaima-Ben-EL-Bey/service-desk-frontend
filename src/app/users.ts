@@ -38,6 +38,14 @@ export class Users {
     return user ? user.fullName : 'Unassigned';
   }
 
+  teamFor(id: number | null): string | null {
+    if (id === null) {
+      return null;
+    }
+    const user = this.users().find((u) => u.id === id);
+    return user ? user.team : null;
+  }
+
   agents(): User[] {
     return this.users().filter((u) => u.roles.includes('AGENT'));
   }

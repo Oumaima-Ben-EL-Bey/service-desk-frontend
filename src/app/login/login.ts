@@ -1,9 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../auth';
-
 
 @Component({
   selector: 'app-login',
@@ -18,16 +17,27 @@ export class Login {
 
   email = '';
   password = '';
+  errorMessage = signal('');
 
   onLogin() {
+    this.errorMessage.set('');
     this.http
       .post<{ token: string }>('https://service-desk-api.fly.dev/login', {
         email: this.email,
         password: this.password,
       })
-      .subscribe((response) => {
-        this.auth.saveToken(response.token);
-        void this.router.navigate(['/tickets']);
+      .subscribe({
+        next: (response) => {
+          this.auth.saveToken(response.token);
+          void this.router.navigate(['/tickets']);
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status === 401) {
+            this.errorMessage.set('Incorrect email or password.');
+          } else {
+            this.errorMessage.set('Something went wrong. Please try again.');
+          }
+        },
       });
   }
 }

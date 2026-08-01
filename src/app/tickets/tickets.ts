@@ -70,6 +70,10 @@ export class Tickets implements OnInit {
   categoryIcon(category: string): string {
     return `/icons/icon-${category.toLowerCase()}.svg`;
   }
+  teamHeading(): string {
+    const team = this.users.teamFor(this.auth.userId());
+    return team ? `${team} tickets` : "Your team's tickets";
+  }
 
   ngOnInit() {
     this.http

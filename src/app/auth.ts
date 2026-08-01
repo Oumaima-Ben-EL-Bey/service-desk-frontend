@@ -15,6 +15,7 @@ export class Auth {
   private fullName = signal('');
   private http = inject(HttpClient);
   private meLoaded = signal(false);
+  private currentUserId = signal<number | null>(null);
 
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
@@ -26,8 +27,11 @@ export class Auth {
     this.meLoaded.set(false);
     this.roles.set([]);
     this.fullName.set('');
+    this.currentUserId.set(null);
   }
-
+  userId(): number | null {
+    return this.currentUserId();
+  }
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
@@ -53,6 +57,7 @@ export class Auth {
       this.roles.set(me.roles);
       this.fullName.set(me.fullName);
       this.meLoaded.set(true);
+      this.currentUserId.set(me.id);
     });
   }
 
