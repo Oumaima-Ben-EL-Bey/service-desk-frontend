@@ -1,4 +1,8 @@
-@if (ticket(); as t) {
+@if (loading()) {
+<p class="detail-loading">Loading…</p>
+} @else if (loadFailed()) {
+<p class="detail-loading form-error">Couldn't load this ticket. Please try again.</p>
+} @else if (ticket(); as t) {
 <article class="ticket-detail">
   <h1 class="detail-title">{{ t.title }}</h1>
   @if (errorMessage()) {
@@ -28,9 +32,7 @@
   </select>
   <button type="button" (click)="assign()" [disabled]="selectedAgentId === null">Assign</button>
   }
-  @if (errorMessage()) {
-  <p class="form-error">{{ errorMessage() }}</p>
-  }
+
 </div>
 <section class="comment-thread">
   <h2 class="thread-heading">Comments</h2>
@@ -48,6 +50,4 @@
   <textarea [(ngModel)]="newComment" name="newComment" placeholder="Write a comment…"></textarea>
   <button type="submit">Send</button>
 </form>
-} @else {
-<p class="detail-loading">Loading…</p>
 }

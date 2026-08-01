@@ -22,6 +22,8 @@ export class Tickets implements OnInit {
   statusFilters = ['ALL', 'NEW', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];
   sortDirection = signal<'asc' | 'desc'>('asc');
   selectedStatus = signal<string>('ALL');
+  loading = signal(true);
+  loadFailed = signal(false);
 
   visibleTickets = computed(() => {
     const status = this.selectedStatus();
@@ -74,10 +76,15 @@ export class Tickets implements OnInit {
       .get<Ticket[]>('https://service-desk-api.fly.dev/tickets', {
         headers: this.auth.authHeaders(),
       })
-      .subscribe((response) => {
-        this.tickets.set(response);
+      .subscribe({
+        next: (response) => {
+          this.tickets.set(response);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loading.set(false);
+          this.loadFailed.set(true);
+        },
       });
-
-
   }
 }
