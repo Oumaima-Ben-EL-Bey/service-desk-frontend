@@ -13,6 +13,10 @@ export class App {
   private router = inject(Router);
   protected readonly title = signal('service-desk-frontend');
 
+  roleIcon(role: string): string {
+    return `/roles/role-${role.toLowerCase()}.svg`;
+  }
+
   logout() {
     this.auth.clearToken();
     void this.router.navigate(['/login']);

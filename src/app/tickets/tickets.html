@@ -1,13 +1,18 @@
 <div class="tickets-page">
   <div class="tickets-header">
     @if (auth.isAdmin()) {
-      <h1 class="tickets-heading">All tickets</h1>
+    <h1 class="tickets-heading">All tickets</h1>
     } @else if (auth.isAgent()) {
     <h1 class="tickets-heading">{{ teamHeading() }}</h1>
     } @else {
-      <h1 class="tickets-heading">Your tickets</h1>
+    <h1 class="tickets-heading">Your tickets</h1>
     }
-    <a class="new-ticket" routerLink="/tickets/new">New ticket</a>
+    <a class="new-ticket" routerLink="/tickets/new">
+      <svg class="new-ticket-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M7 2.6v8.8M2.6 7h8.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+      </svg>
+      New ticket
+    </a>
     <button
       class="sort-toggle"
       (click)="sortDirection.set(sortDirection() === 'asc' ? 'desc' : 'asc')"
@@ -18,45 +23,47 @@
   </div>
   <div class="filter-bar">
     @for (status of statusFilters; track status) {
-      <button
-        class="control-btn"
-        [style.--chip-color]="statusColor(status)"
-        [class.active]="selectedStatus() === status"
-        (click)="selectedStatus.set(status)"
-      >
-        @if (status !== 'ALL') {
-          <img class="chip-dot" [src]="statusIcon(status)" alt="" />
-        }
-        {{ status }}
-        <span class="chip-count">{{ countFor(status) }}</span>
-      </button>
+    <button
+      class="control-btn"
+      [style.--chip-color]="statusColor(status)"
+      [class.active]="selectedStatus() === status"
+      (click)="selectedStatus.set(status)"
+    >
+      @if (status !== 'ALL') {
+      <img class="chip-dot" [src]="statusIcon(status)" alt="" />
+      }
+      {{ status }}
+      <span class="chip-count">{{ countFor(status) }}</span>
+    </button>
     }
   </div>
   @if (loading()) {
-  <p class="list-message">Loading…</p>
+  <p class="list-message list-loading"><span class="loading-dot"></span>Loading tickets&hellip;</p>
   } @else if (loadFailed()) {
   <p class="list-message form-error">Couldn't load tickets. Please try again.</p>
   } @else {
-    @for (ticket of sortedTickets(); track ticket.id) {
-      <article class="ticket" [routerLink]="['/tickets', ticket.id]">
-        <div class="ticket-main">
-          <h3 class="ticket-title">{{ ticket.title }}</h3>
-          <p class="ticket-desc">{{ ticket.description }}</p>
-          <p class="ticket-meta">Requested by {{ users.nameFor(ticket.requesterId) }}</p>
-        </div>
-        <div class="ticket-side">
+  @for (ticket of sortedTickets(); track ticket.id) {
+  <article class="ticket" [routerLink]="['/tickets', ticket.id]">
+    <div class="ticket-main">
+      <h3 class="ticket-title">
+        <span class="ticket-id">#{{ ticket.id }}</span>{{ ticket.title }}
+      </h3>
+      <p class="ticket-desc">{{ ticket.description }}</p>
+      <p class="ticket-meta">Requested by {{ users.nameFor(ticket.requesterId) }}</p>
+    </div>
+    <div class="ticket-side">
           <span class="status">
             <img class="status-icon" [src]="statusIcon(ticket.status)" alt="" />
             {{ ticket.status }}
           </span>
-          <span [class]="'pill cat-' + ticket.category.toLowerCase()">
+      <span [class]="'pill cat-' + ticket.category.toLowerCase()">
             <img class="category-icon" [src]="categoryIcon(ticket.category)" alt="" />
             {{ ticket.category }}
           </span>
-        </div>
-      </article>
-    }@empty {
-  <p class="list-message">No tickets to show.</p>
+    </div>
+  </article>
+  }@empty {
+  <p class="list-message list-empty">No tickets to show.</p>
   }
   }
 

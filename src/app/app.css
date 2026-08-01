@@ -1,0 +1,101 @@
+.app-header {
+  background: var(--color-ink);
+}
+
+.app-header-inner {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.app-name {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-surface);
+  white-space: nowrap;
+}
+
+.app-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-user-name {
+  font-size: 13px;
+  color: var(--color-status-closed);
+  white-space: nowrap;
+}
+
+.app-user-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.16);
+  margin: 0 2px;
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  box-sizing: border-box;
+  padding: 0 9px 0 6px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.role-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.role-admin {
+  background: var(--color-role-admin-soft);
+  color: var(--color-role-admin);
+}
+
+.role-agent {
+  background: var(--color-role-agent-soft);
+  color: var(--color-role-agent);
+}
+
+.role-requester {
+  background: var(--color-role-requester-soft);
+  border: 1px solid var(--color-border);
+  color: var(--color-role-requester);
+}
+
+.logout-btn {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-border-strong);
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.logout-btn:hover {
+  color: var(--color-surface);
+  border-color: var(--color-surface);
+}
+
+.logout-btn:focus-visible {
+  outline: 2px solid var(--color-surface);
+  outline-offset: 2px;
+}
