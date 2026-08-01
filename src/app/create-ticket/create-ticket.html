@@ -35,7 +35,9 @@
     }
   </select>
 
-
+  @if (errorMessage()) {
+  <p class="form-error">{{ errorMessage() }}</p>
+  }xs
 
   <button type="submit" [disabled]="form.invalid">Create ticket</button>
 </form>

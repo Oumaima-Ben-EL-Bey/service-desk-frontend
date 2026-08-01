@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -18,18 +18,29 @@ export class CreateTicket {
   title = '';
   description = '';
   category = '';
+  errorMessage = signal('');
 
   categories = ['NETWORK', 'HARDWARE', 'ACCESS', 'SOFTWARE'];
 
   createTicket() {
+    this.errorMessage.set('');
     this.http
       .post(
         'https://service-desk-api.fly.dev/tickets',
         { title: this.title, description: this.description, category: this.category },
         { headers: this.auth.authHeaders() },
       )
-      .subscribe(() => {
-        void this.router.navigate(['/tickets']);
+      .subscribe({
+        next: () => {
+          void this.router.navigate(['/tickets']);
+        },
+        error: (err) => {
+          if (err.status === 400) {
+            this.errorMessage.set('Please check your input and try again.');
+          } else {
+            this.errorMessage.set('Something went wrong. Please try again.');
+          }
+        },
       });
   }
 }
