@@ -4,24 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Auth } from '../auth';
 import { FormsModule } from '@angular/forms';
 import { Users } from '../users';
-
-
-interface Ticket {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-  category: string;
-  requesterId: number;
-  assigneeId: number | null;
-}
-
-interface Comment {
-  id: number;
-  body: string;
-  authorId: number;
-  createdAt: string;
-}
+import { Ticket, Comment } from '../models';
 
 const STATUS_TRANSITIONS: Record<string, string[]> = {
   NEW: ['IN_PROGRESS', 'RESOLVED', 'CLOSED'],
