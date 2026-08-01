@@ -31,6 +31,8 @@ export class TicketDetail implements OnInit {
   newComment = '';
   selectedAgentId: number | null = null;
   errorMessage = signal('');
+  loading = signal(true);
+  loadFailed = signal(false);
 
   ngOnInit() {
     this.ticketId = this.route.snapshot.paramMap.get('id');
@@ -39,8 +41,15 @@ export class TicketDetail implements OnInit {
       .get<Ticket>(`https://service-desk-api.fly.dev/tickets/${this.ticketId}`, {
         headers: this.auth.authHeaders(),
       })
-      .subscribe((response) => {
+      .subscribe({
+      next:(response)=>{
         this.ticket.set(response);
+        this.loading.set(false);
+        },
+      error: () => {
+        this.loading.set(false);
+        this.loadFailed.set(true);
+        },
       });
     this.http
       .get<Comment[]>(`https://service-desk-api.fly.dev/tickets/${this.ticketId}/comments`, {

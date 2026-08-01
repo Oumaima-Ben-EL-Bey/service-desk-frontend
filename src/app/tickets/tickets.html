@@ -32,24 +32,32 @@
       </button>
     }
   </div>
-
-  @for (ticket of sortedTickets(); track ticket.id) {
-    <article class="ticket" [routerLink]="['/tickets', ticket.id]">
-      <div class="ticket-main">
-        <h3 class="ticket-title">{{ ticket.title }}</h3>
-        <p class="ticket-desc">{{ ticket.description }}</p>
-        <p class="ticket-meta">Requested by {{ users.nameFor(ticket.requesterId) }}</p>
-      </div>
-      <div class="ticket-side">
-        <span class="status">
-          <img class="status-icon" [src]="statusIcon(ticket.status)" alt="" />
-          {{ ticket.status }}
-        </span>
-        <span [class]="'pill cat-' + ticket.category.toLowerCase()">
-          <img class="category-icon" [src]="categoryIcon(ticket.category)" alt="" />
-          {{ ticket.category }}
-        </span>
-      </div>
-    </article>
+  @if (loading()) {
+  <p class="list-message">Loading…</p>
+  } @else if (loadFailed()) {
+  <p class="list-message form-error">Couldn't load tickets. Please try again.</p>
+  } @else {
+    @for (ticket of sortedTickets(); track ticket.id) {
+      <article class="ticket" [routerLink]="['/tickets', ticket.id]">
+        <div class="ticket-main">
+          <h3 class="ticket-title">{{ ticket.title }}</h3>
+          <p class="ticket-desc">{{ ticket.description }}</p>
+          <p class="ticket-meta">Requested by {{ users.nameFor(ticket.requesterId) }}</p>
+        </div>
+        <div class="ticket-side">
+          <span class="status">
+            <img class="status-icon" [src]="statusIcon(ticket.status)" alt="" />
+            {{ ticket.status }}
+          </span>
+          <span [class]="'pill cat-' + ticket.category.toLowerCase()">
+            <img class="category-icon" [src]="categoryIcon(ticket.category)" alt="" />
+            {{ ticket.category }}
+          </span>
+        </div>
+      </article>
+    }@empty {
+  <p class="list-message">No tickets to show.</p>
   }
+  }
+
 </div>
