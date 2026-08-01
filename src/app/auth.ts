@@ -10,19 +10,30 @@ interface CurrentUser {
 @Service()
 export class Auth {
   private tokenKey = 'token';
+  private loggedIn = signal(this.getToken() !== null);
   private roles = signal<string[]>([]);
+  private fullName = signal('');
   private http = inject(HttpClient);
   private meLoaded = signal(false);
 
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
+    this.loggedIn.set(true);
+  }
+  clearToken(): void {
+    localStorage.removeItem(this.tokenKey);
+    this.loggedIn.set(false);
+    this.meLoaded.set(false);
+    this.roles.set([]);
+    this.fullName.set('');
   }
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
-  clearToken(): void {
-    localStorage.removeItem(this.tokenKey);
+
+  isLoggedIn(): boolean {
+    return this.loggedIn();
   }
 
   authHeaders() {
@@ -40,6 +51,7 @@ export class Auth {
     }
     this.getMe().subscribe((me) => {
       this.roles.set(me.roles);
+      this.fullName.set(me.fullName);
       this.meLoaded.set(true);
     });
   }
@@ -50,5 +62,11 @@ export class Auth {
 
   isAdmin(): boolean {
     return this.roles().includes('ADMIN');
+  }
+  name(): string {
+    return this.fullName();
+  }
+  role(): string {
+    return this.roles()[0] ?? '';
   }
 }
