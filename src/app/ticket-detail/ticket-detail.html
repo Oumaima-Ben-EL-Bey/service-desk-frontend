@@ -4,8 +4,8 @@
   <p class="detail-desc">{{ t.description }}</p>
   <p class="detail-meta">Status: {{ t.status }}</p>
   <p class="detail-meta">Category: {{ t.category }}</p>
-  <p class="detail-meta">Requested by: {{ t.requesterId }}</p>
-  <p class="detail-meta">Assigned to: {{ t.assigneeId }}</p>
+  <p class="detail-meta">Requested by: {{ users.nameFor(t.requesterId) }}</p>
+  <p class="detail-meta">Assigned to: {{ users.nameFor(t.assigneeId) }}</p>
 </article>
 <div class="detail-actions">
   @if (auth.isAgent()) {
@@ -16,13 +16,22 @@
   <button type="button" (click)="changeStatus(target)">Mark {{ target }}</button>
   }
   }
+  @if (auth.isAdmin()) {
+  <select [(ngModel)]="selectedAgentId" name="assignee">
+    <option [ngValue]="null" disabled>Choose an agent…</option>
+    @for (agent of users.agents(); track agent.id) {
+    <option [ngValue]="agent.id">{{ agent.fullName }}</option>
+    }
+  </select>
+  <button type="button" (click)="assign()" [disabled]="selectedAgentId === null">Assign</button>
+  }
 </div>
 <section class="comment-thread">
   <h2 class="thread-heading">Comments</h2>
   @for (comment of comments(); track comment.id) {
   <article class="comment">
     <p class="comment-body">{{ comment.body }}</p>
-    <p class="comment-meta">By {{ comment.authorId }} · {{ comment.createdAt }}</p>
+    <p class="comment-meta">By {{ users.nameFor(comment.authorId) }} · {{ comment.createdAt }}</p>
   </article>
   } @empty {
   <p class="comment-empty">No comments yet.</p>

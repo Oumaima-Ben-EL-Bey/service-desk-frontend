@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Auth } from '../auth';
 import { FormsModule } from '@angular/forms';
+import { Users } from '../users';
+
 
 interface Ticket {
   id: number;
@@ -38,11 +40,13 @@ export class TicketDetail implements OnInit {
   private http = inject(HttpClient);
   protected auth = inject(Auth);
   private route = inject(ActivatedRoute);
+  protected users = inject(Users);
 
   ticket = signal<Ticket | null>(null);
   comments = signal<Comment[]>([]);
   ticketId: string | null = null;
   newComment = '';
+  selectedAgentId: number | null = null;
 
   ngOnInit() {
     this.auth.loadMe();
@@ -62,6 +66,7 @@ export class TicketDetail implements OnInit {
       .subscribe((response) => {
         this.comments.set(response);
       });
+    this.users.loadUsers();
   }
 
   addComment() {
@@ -104,5 +109,17 @@ export class TicketDetail implements OnInit {
   allowedStatuses(): string[] {
     const current = this.ticket()?.status;
     return current ? STATUS_TRANSITIONS[current] : [];
+  }
+
+  assign() {
+    this.http
+      .patch<Ticket>(
+        `https://service-desk-api.fly.dev/tickets/${this.ticketId}/assignee`,
+        { assigneeId: this.selectedAgentId },
+        { headers: this.auth.authHeaders() },
+      )
+      .subscribe((updated) => {
+        this.ticket.set(updated);
+      });
   }
 }

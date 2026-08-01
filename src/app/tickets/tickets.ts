@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Auth } from '../auth';
 import { RouterLink } from '@angular/router';
+import { Users } from '../users';
 
 interface Ticket {
   id: number;
@@ -10,11 +11,6 @@ interface Ticket {
   status: string;
   category: string;
   requesterId: number;
-}
-
-interface User {
-  id: number;
-  fullName: string;
 }
 
 @Component({
@@ -26,9 +22,9 @@ interface User {
 export class Tickets implements OnInit {
   private http = inject(HttpClient);
   protected auth = inject(Auth);
+  protected users = inject(Users);
 
   tickets = signal<Ticket[]>([]);
-  users = signal<User[]>([]);
   statusFilters = ['ALL', 'NEW', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];
   sortDirection = signal<'asc' | 'desc'>('asc');
   selectedStatus = signal<string>('ALL');
@@ -49,10 +45,6 @@ export class Tickets implements OnInit {
       return direction === 'asc' ? comparison : -comparison;
     });
   });
-  userName(id: number): string {
-    const user = this.users().find((u) => u.id === id);
-    return user ? user.fullName : '';
-  }
 
   countFor(status: string): number {
     if (status === 'ALL') {
@@ -92,13 +84,7 @@ export class Tickets implements OnInit {
         this.tickets.set(response);
       });
 
-    this.http
-      .get<User[]>('https://service-desk-api.fly.dev/users', {
-        headers: this.auth.authHeaders(),
-      })
-      .subscribe((response) => {
-        this.users.set(response);
-      });
+    this.users.loadUsers();
 
     this.auth.loadMe();
   }
