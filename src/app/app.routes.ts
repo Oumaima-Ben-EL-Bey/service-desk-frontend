@@ -4,9 +4,11 @@ import { Tickets } from './tickets/tickets';
 import { TicketDetail } from './ticket-detail/ticket-detail';
 import { CreateTicket } from './create-ticket/create-ticket';
 import { authGuard } from './auth-guard';
+import { Register } from './register/register';
 
 export const routes: Routes = [
   { path: 'login', component: Login },
+  { path: 'register', component: Register },
   { path: 'tickets', component: Tickets, canActivate: [authGuard] },
   { path: 'tickets/new', component: CreateTicket, canActivate: [authGuard] },
   { path: 'tickets/:id', component: TicketDetail, canActivate: [authGuard] },
