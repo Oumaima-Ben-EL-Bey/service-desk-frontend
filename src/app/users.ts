@@ -32,4 +32,8 @@ export class Users {
     const user = this.users().find((u) => u.id === id);
     return user ? user.fullName : 'Unassigned';
   }
+
+  agents(): User[] {
+    return this.users().filter((u) => u.roles.includes('AGENT'));
+  }
 }
