@@ -12,6 +12,7 @@ export class Auth {
   private tokenKey = 'token';
   private roles = signal<string[]>([]);
   private http = inject(HttpClient);
+  private meLoaded = signal(false);
 
   saveToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
@@ -31,7 +32,13 @@ export class Auth {
   }
 
   loadMe() {
-    this.getMe().subscribe((me) => this.roles.set(me.roles));
+    if (this.meLoaded()) {
+      return;
+    }
+    this.getMe().subscribe((me) => {
+      this.roles.set(me.roles);
+      this.meLoaded.set(true);
+    });
   }
 
   isAgent(): boolean {

@@ -14,14 +14,19 @@ export class Users {
   private http = inject(HttpClient);
   private auth = inject(Auth);
   private users = signal<User[]>([]);
+  private usersLoaded = signal(false);
 
   loadUsers() {
+    if(this.usersLoaded()) {
+      return;
+    }
     this.http
       .get<User[]>('https://service-desk-api.fly.dev/users', {
         headers: this.auth.authHeaders(),
       })
       .subscribe((response) => {
         this.users.set(response);
+        this.usersLoaded.set(true);
       });
   }
 
