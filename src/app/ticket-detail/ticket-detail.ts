@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Auth } from '../auth';
 import { FormsModule } from '@angular/forms';
@@ -30,9 +30,9 @@ export class TicketDetail implements OnInit {
   ticketId: string | null = null;
   newComment = '';
   selectedAgentId: number | null = null;
+  errorMessage = signal('');
 
   ngOnInit() {
-
     this.ticketId = this.route.snapshot.paramMap.get('id');
 
     this.http
@@ -52,29 +52,36 @@ export class TicketDetail implements OnInit {
   }
 
   addComment() {
+    this.errorMessage.set('');
     this.http
       .post<Comment>(
         `https://service-desk-api.fly.dev/tickets/${this.ticketId}/comments`,
         { body: this.newComment },
         { headers: this.auth.authHeaders() },
       )
-      .subscribe((created) => {
-        this.comments.update((list) => [...list, created]);
-        this.newComment = '';
+      .subscribe({
+        next: (created) => {
+          this.comments.update((list) => [...list, created]);
+          this.newComment = '';
+        },
+        error: (err) => this.showError(err),
       });
   }
 
   claim() {
+    this.errorMessage.set('');
     this.http
       .post<Ticket>(`https://service-desk-api.fly.dev/tickets/${this.ticketId}/claim`, null, {
         headers: this.auth.authHeaders(),
       })
-      .subscribe((updated) => {
-        this.ticket.set(updated);
+      .subscribe({
+        next: (updated) => this.ticket.set(updated),
+        error: (err) => this.showError(err),
       });
   }
 
   changeStatus(target: string) {
+    this.errorMessage.set('');
     this.http
       .patch<Ticket>(
         `https://service-desk-api.fly.dev/tickets/${this.ticketId}/status`,
@@ -83,8 +90,9 @@ export class TicketDetail implements OnInit {
         },
         { headers: this.auth.authHeaders() },
       )
-      .subscribe((statusUpdated) => {
-        this.ticket.set(statusUpdated);
+      .subscribe({
+        next: (statusUpdated) => this.ticket.set(statusUpdated),
+        error: (err) => this.showError(err),
       });
   }
 
@@ -94,14 +102,30 @@ export class TicketDetail implements OnInit {
   }
 
   assign() {
+    this.errorMessage.set('');
     this.http
       .patch<Ticket>(
         `https://service-desk-api.fly.dev/tickets/${this.ticketId}/assignee`,
         { assigneeId: this.selectedAgentId },
         { headers: this.auth.authHeaders() },
       )
-      .subscribe((updated) => {
-        this.ticket.set(updated);
+      .subscribe({
+        next: (updated) => this.ticket.set(updated),
+        error: (err) => this.showError(err),
       });
+  }
+
+  private showError(err: HttpErrorResponse) {
+    if (err.status === 400) {
+      this.errorMessage.set('Please check your input and try again.');
+    } else if (err.status === 403) {
+      this.errorMessage.set("You don't have permission to do that.");
+    } else if (err.status === 404) {
+      this.errorMessage.set('That item no longer exists.');
+    } else if (err.status === 409) {
+      this.errorMessage.set("That action isn't allowed right now.");
+    } else {
+      this.errorMessage.set('Something went wrong. Please try again.');
+    }
   }
 }

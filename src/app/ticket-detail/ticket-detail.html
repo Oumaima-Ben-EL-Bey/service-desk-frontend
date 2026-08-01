@@ -1,6 +1,9 @@
 @if (ticket(); as t) {
 <article class="ticket-detail">
   <h1 class="detail-title">{{ t.title }}</h1>
+  @if (errorMessage()) {
+  <p class="form-error">{{ errorMessage() }}</p>
+  }
   <p class="detail-desc">{{ t.description }}</p>
   <p class="detail-meta">Status: {{ t.status }}</p>
   <p class="detail-meta">Category: {{ t.category }}</p>
@@ -24,6 +27,9 @@
     }
   </select>
   <button type="button" (click)="assign()" [disabled]="selectedAgentId === null">Assign</button>
+  }
+  @if (errorMessage()) {
+  <p class="form-error">{{ errorMessage() }}</p>
   }
 </div>
 <section class="comment-thread">

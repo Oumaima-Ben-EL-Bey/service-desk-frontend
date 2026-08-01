@@ -21,6 +21,9 @@ export class Auth {
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
+  clearToken(): void {
+    localStorage.removeItem(this.tokenKey);
+  }
 
   authHeaders() {
     return { Authorization: `Bearer ${this.getToken()}` };
