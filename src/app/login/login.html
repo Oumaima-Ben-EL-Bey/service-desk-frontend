@@ -4,5 +4,8 @@
   <label for="password">Password</label>
   <input type="password" id="password" [(ngModel)]="password"  name="password" />
   <button type="submit">Log in</button>
+  @if (errorMessage()) {
+  <p class="form-error">{{ errorMessage() }}</p>
+  }
   <a routerLink="/register">Need an account? Register</a>
 </form>
