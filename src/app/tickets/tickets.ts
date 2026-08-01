@@ -3,15 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Auth } from '../auth';
 import { RouterLink } from '@angular/router';
 import { Users } from '../users';
+import { Ticket } from '../models';
 
-interface Ticket {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-  category: string;
-  requesterId: number;
-}
+
 
 @Component({
   selector: 'app-tickets',
