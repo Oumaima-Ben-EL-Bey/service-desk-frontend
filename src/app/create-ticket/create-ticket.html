@@ -1,0 +1,41 @@
+<form (ngSubmit)="createTicket()" #form="ngForm">
+  <label for="title">Title</label>
+  <input
+    type="text"
+    id="title"
+    [(ngModel)]="title"
+    name="title"
+    required
+    maxlength="200"
+    #titleCtrl="ngModel"
+  />
+  @if (titleCtrl.invalid && titleCtrl.touched) {
+  <p class="field-error">Title is required (max 200 characters).</p>
+  }
+
+  <label for="description">Description</label>
+  <textarea id="description"
+            [(ngModel)]="description"
+            name="description"
+            required
+            #descriptionCtrl="ngModel"
+  ></textarea>
+  @if (descriptionCtrl.invalid && descriptionCtrl.touched) {
+  <p class="field-error">Description is required</p>
+}
+  <label for="category">Category</label>
+  <select id="category"
+          [(ngModel)]="category"
+          name="category"
+          required
+  >
+    <option value="" disabled>Choose a category…</option>
+    @for (cat of categories; track cat) {
+    <option [value]="cat">{{ cat }}</option>
+    }
+  </select>
+
+
+
+  <button type="submit" [disabled]="form.invalid">Create ticket</button>
+</form>
