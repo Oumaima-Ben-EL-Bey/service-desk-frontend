@@ -1,9 +1,19 @@
 @if (auth.isLoggedIn()) {
 <header class="app-header">
-  <span class="app-name">Service Desk</span>
-  <span class="app-user">Logged in as {{ auth.name() }} ({{ auth.role() }})</span>
-  <button type="button" (click)="logout()">Logout</button>
+  <div class="app-header-inner">
+    <span class="app-name">Service Desk</span>
+    <div class="app-user">
+      <span class="app-user-name">{{ auth.name() }}</span>
+      @if (auth.role()) {
+      <span class="role-badge" [class]="'role-badge role-' + auth.role().toLowerCase()">
+        <img class="role-icon" [src]="roleIcon(auth.role())" alt="" />
+        {{ auth.role() }}
+      </span>
+      }
+      <span class="app-user-divider"></span>
+      <button class="logout-btn" type="button" (click)="logout()">Logout</button>
+    </div>
+  </div>
 </header>
 }
-<router-outlet />
 <router-outlet />

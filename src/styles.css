@@ -3,13 +3,15 @@
   --color-accent: #7C3AED;
   --color-accent-strong: #5B21B6;
   --color-accent-soft: #EDE9FE;
+  --color-accent-line: #DDD6FE;
 
   /* Neutrals */
   --color-ink: #111827;
   --color-muted: #6B7280;
   --color-surface: #FFFFFF;
-  --color-page: #F1F5F9;
+  --color-page: #F3F4F6;
   --color-border: #E5E7EB;
+  --color-border-strong: #D1D5DB;
 
   /* Type */
   --font-heading: 'Space Grotesk', sans-serif;
@@ -17,7 +19,7 @@
 
   /* Status */
   --color-status-new: #7C3AED;
-  --color-status-progress: #D97706;
+  --color-status-progress: #B45309;
   --color-status-resolved: #059669;
   --color-status-closed: #9CA3AF;
 
@@ -25,7 +27,12 @@
   --color-network: #1E40AF;   --color-network-soft: #DBEAFE;
   --color-hardware: #155E75;  --color-hardware-soft: #CFFAFE;
   --color-access: #9D174D;    --color-access-soft: #FCE7F3;
-  --color-software: #B91C1C;  --color-software-soft: #FEE2E2;
+  --color-software: #991B1B;  --color-software-soft: #FEE2E2;  --color-software-line: #FECACA;
+
+  /* Roles */
+  --color-role-admin: #9D174D;      --color-role-admin-soft: #FCE7F3;
+  --color-role-agent: #155E75;      --color-role-agent-soft: #CFFAFE;
+  --color-role-requester: #6B7280;  --color-role-requester-soft: #FFFFFF;
 }
 
 body {
@@ -38,5 +45,3 @@ body {
 h1, h2, h3 {
   font-family: var(--font-heading);
 }
-
-
