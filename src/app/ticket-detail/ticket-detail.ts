@@ -32,7 +32,7 @@ export class TicketDetail implements OnInit {
   selectedAgentId: number | null = null;
 
   ngOnInit() {
-    this.auth.loadMe();
+
     this.ticketId = this.route.snapshot.paramMap.get('id');
 
     this.http
@@ -49,7 +49,6 @@ export class TicketDetail implements OnInit {
       .subscribe((response) => {
         this.comments.set(response);
       });
-    this.users.loadUsers();
   }
 
   addComment() {

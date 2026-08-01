@@ -78,8 +78,6 @@ export class Tickets implements OnInit {
         this.tickets.set(response);
       });
 
-    this.users.loadUsers();
 
-    this.auth.loadMe();
   }
 }
