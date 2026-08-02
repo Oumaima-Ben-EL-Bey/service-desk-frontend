@@ -1,12 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../auth';
+import { Ticket } from '../models';
 
 @Component({
   selector: 'app-create-ticket',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './create-ticket.html',
   styleUrl: './create-ticket.css',
 })
@@ -25,14 +26,14 @@ export class CreateTicket {
   createTicket() {
     this.errorMessage.set('');
     this.http
-      .post(
+      .post<Ticket>(
         'https://service-desk-api.fly.dev/tickets',
         { title: this.title, description: this.description, category: this.category },
         { headers: this.auth.authHeaders() },
       )
       .subscribe({
-        next: () => {
-          void this.router.navigate(['/tickets']);
+        next: (created) => {
+          void this.router.navigate(created?.id ? ['/tickets', created.id] : ['/tickets']);
         },
         error: (err) => {
           if (err.status === 400) {
