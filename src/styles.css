@@ -35,8 +35,8 @@
   --color-stamp: #B45309;
 
   /* Categories */
-  --color-network: #1E40AF;   --color-network-soft: #DBEAFE;
-  --color-hardware: #155E75;  --color-hardware-soft: #CFFAFE;
+  --color-network: #1E40AF;   --color-network-soft: #DBEAFE;   --color-network-strong: #1E3A8A;
+  --color-hardware: #155E75;  --color-hardware-soft: #CFFAFE;  --color-hardware-strong: #124E60;
   --color-access: #9D174D;    --color-access-soft: #FCE7F3;
   --color-software: #991B1B;  --color-software-soft: #FEE2E2;  --color-software-line: #FECACA;
 

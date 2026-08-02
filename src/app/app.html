@@ -1,7 +1,10 @@
-@if (auth.isLoggedIn()) {
 <header class="app-header">
   <div class="app-header-inner">
-    <span class="app-name">Service Desk</span>
+    <span class="app-brand">
+      <img class="app-mark" src="/brand/mark.svg" alt="" />
+      <span class="app-name">Service Desk</span>
+    </span>
+    @if (auth.isLoggedIn()) {
     <div class="app-user">
       <span class="app-user-name">{{ auth.name() }}</span>
       @if (auth.role()) {
@@ -13,7 +16,7 @@
       <span class="app-user-divider"></span>
       <button class="logout-btn" type="button" (click)="logout()">Logout</button>
     </div>
+    }
   </div>
 </header>
-}
 <router-outlet />
