@@ -1,53 +1,104 @@
 @if (loading()) {
-<p class="detail-loading">Loading…</p>
+<p class="detail-loading">Loading&hellip;</p>
 } @else if (loadFailed()) {
 <p class="detail-loading form-error">Couldn't load this ticket. Please try again.</p>
 } @else if (ticket(); as t) {
-<article class="ticket-detail">
-  <h1 class="detail-title">{{ t.title }}</h1>
+<section class="status-band" [attr.data-status]="t.status">
+  <div class="band-inner">
+    <a class="back-link" routerLink="/tickets">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M8.4 3.2 4.6 7l3.8 3.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      All tickets
+    </a>
+    <div class="band-head">
+      <h1 class="detail-title"><span class="detail-id">#{{ t.id }}</span>{{ t.title }}</h1>
+      <div class="status-hero">
+        <span class="status-hero-dot"></span>
+        <span class="status-hero-text">
+          <span class="micro-label">Status</span>
+          <span class="status-hero-value">{{ t.status }}</span>
+        </span>
+      </div>
+    </div>
+    <div class="band-actions">
+      @if (auth.isAdmin() || auth.isAgent()) {
+      @if (allowedStatuses().length) {
+      <span class="micro-label">Move to</span>
+      @for (target of allowedStatuses(); track target) {
+      <button class="pipe-row" type="button" [attr.data-target]="target" (click)="changeStatus(target)">
+        <span class="pipe-dot"></span>
+        <span class="pipe-name">{{ target }}</span>
+        <svg class="pipe-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2.6 7h8.8M7.8 3.4 11.4 7l-3.6 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      }
+      } @else {
+      <span class="pipe-terminal">No moves left</span>
+      }
+      }
+      <span class="band-divider"></span>
+      <span class="band-assignee">Assigned to <strong>{{ users.nameFor(t.assigneeId) }}</strong></span>
+      @if (auth.isAdmin()) {
+      <span class="assign">
+        <select class="assign-select" [(ngModel)]="selectedAgentId" name="assignee">
+          <option [ngValue]="null" disabled>Choose an agent&hellip;</option>
+          @for (agent of users.agents(); track agent.id) {
+          <option [ngValue]="agent.id">{{ agent.fullName }}</option>
+          }
+        </select>
+        <button class="assign-btn" type="button" (click)="assign()" [disabled]="selectedAgentId === null">Assign</button>
+      </span>
+      }
+      @if (auth.isAgent()) {
+      <button class="claim-btn" type="button" (click)="claim()">Claim</button>
+      }
+    </div>
+  </div>
+</section>
+
+<div class="detail-page">
   @if (errorMessage()) {
   <p class="form-error">{{ errorMessage() }}</p>
   }
-  <p class="detail-desc">{{ t.description }}</p>
-  <p class="detail-meta">Status: {{ t.status }}</p>
-  <p class="detail-meta">Category: {{ t.category }}</p>
-  <p class="detail-meta">Requested by: {{ users.nameFor(t.requesterId) }}</p>
-  <p class="detail-meta">Assigned to: {{ users.nameFor(t.assigneeId) }}</p>
-</article>
-<div class="detail-actions">
-  @if (auth.isAgent()) {
-  <button type="button" (click)="claim()">Claim</button>
-  }
-  @if (auth.isAdmin() || auth.isAgent()) {
-  @for (target of allowedStatuses(); track target) {
-  <button type="button" (click)="changeStatus(target)">Mark {{ target }}</button>
-  }
-  }
-  @if (auth.isAdmin()) {
-  <select [(ngModel)]="selectedAgentId" name="assignee">
-    <option [ngValue]="null" disabled>Choose an agent…</option>
-    @for (agent of users.agents(); track agent.id) {
-    <option [ngValue]="agent.id">{{ agent.fullName }}</option>
-    }
-  </select>
-  <button type="button" (click)="assign()" [disabled]="selectedAgentId === null">Assign</button>
-  }
-
-</div>
-<section class="comment-thread">
-  <h2 class="thread-heading">Comments</h2>
-  @for (comment of comments(); track comment.id) {
-  <article class="comment">
-    <p class="comment-body">{{ comment.body }}</p>
-    <p class="comment-meta">By {{ users.nameFor(comment.authorId) }} · {{ comment.createdAt }}</p>
+  <article class="detail-card">
+    <p class="detail-desc">{{ t.description }}</p>
+    <div class="detail-facts">
+      <span class="pill" [attr.data-category]="t.category">{{ t.category }}</span>
+      <span class="fact">Requested by <strong>{{ users.nameFor(t.requesterId) }}</strong></span>
+      <span class="fact-divider"></span>
+      <span class="stamp">
+        <span class="stamp-label">Created</span>
+        <span class="stamp-value">{{ t.createdAt | date: 'd MMM · HH:mm' }}</span>
+      </span>
+      <span class="stamp">
+        <span class="stamp-label">Updated</span>
+        <span class="stamp-value">{{ t.updatedAt | date: 'd MMM · HH:mm' }}</span>
+      </span>
+    </div>
   </article>
-  } @empty {
-  <p class="comment-empty">No comments yet.</p>
-  }
-</section>
 
-<form (ngSubmit)="addComment()">
-  <textarea [(ngModel)]="newComment" name="newComment" placeholder="Write a comment…"></textarea>
-  <button type="submit">Send</button>
-</form>
+  <section class="comment-thread">
+    <div class="thread-head">
+      <h2 class="thread-heading">Comments</h2>
+      <span class="thread-count">{{ comments().length }}</span>
+    </div>
+    @for (comment of comments(); track comment.id) {
+    <article class="comment">
+      <p class="comment-meta">
+        <span class="comment-author">{{ users.nameFor(comment.authorId) }}</span>
+        <span class="comment-time">{{ comment.createdAt | date: 'd MMM · HH:mm' }}</span>
+      </p>
+      <p class="comment-body">{{ comment.body }}</p>
+    </article>
+    } @empty {
+    <p class="comment-empty">No comments yet.</p>
+    }
+    <form class="comment-form" (ngSubmit)="addComment()">
+      <textarea [(ngModel)]="newComment" name="newComment" placeholder="Write a comment&hellip;"></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+</div>
 }

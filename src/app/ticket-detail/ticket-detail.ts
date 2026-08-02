@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { Auth } from '../auth';
 import { FormsModule } from '@angular/forms';
 import { Users } from '../users';
@@ -15,7 +16,7 @@ const STATUS_TRANSITIONS: Record<string, string[]> = {
 
 @Component({
   selector: 'app-ticket-detail',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink, DatePipe],
   templateUrl: './ticket-detail.html',
   styleUrl: './ticket-detail.css',
 })
@@ -42,13 +43,13 @@ export class TicketDetail implements OnInit {
         headers: this.auth.authHeaders(),
       })
       .subscribe({
-      next:(response)=>{
-        this.ticket.set(response);
-        this.loading.set(false);
+        next: (response) => {
+          this.ticket.set(response);
+          this.loading.set(false);
         },
-      error: () => {
-        this.loading.set(false);
-        this.loadFailed.set(true);
+        error: () => {
+          this.loading.set(false);
+          this.loadFailed.set(true);
         },
       });
     this.http
