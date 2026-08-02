@@ -1,43 +1,76 @@
-<form (ngSubmit)="createTicket()" #form="ngForm">
-  <label for="title">Title</label>
-  <input
-    type="text"
-    id="title"
-    [(ngModel)]="title"
-    name="title"
-    required
-    maxlength="200"
-    #titleCtrl="ngModel"
-  />
-  @if (titleCtrl.invalid && titleCtrl.touched) {
-  <p class="field-error">Title is required (max 200 characters).</p>
-  }
+<div class="create-page">
+  <a class="back-link" routerLink="/tickets">
+    <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M8.4 3.2 4.6 7l3.8 3.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    All tickets
+  </a>
 
-  <label for="description">Description</label>
-  <textarea id="description"
-            [(ngModel)]="description"
-            name="description"
-            required
-            #descriptionCtrl="ngModel"
-  ></textarea>
-  @if (descriptionCtrl.invalid && descriptionCtrl.touched) {
-  <p class="field-error">Description is required</p>
-}
-  <label for="category">Category</label>
-  <select id="category"
-          [(ngModel)]="category"
-          name="category"
+  <form class="create-card" (ngSubmit)="createTicket()" #form="ngForm">
+    <div class="create-cap">
+      <h1 class="create-heading">New ticket</h1>
+    </div>
+
+    <div class="create-body">
+      <div class="field">
+        <div class="field-head">
+          <label class="field-label" for="title">Title</label>
+          <span class="field-count">{{ title.length }} / 200</span>
+        </div>
+        <input
+          type="text"
+          id="title"
+          placeholder="Short summary of the problem"
+          [(ngModel)]="title"
+          name="title"
           required
-  >
-    <option value="" disabled>Choose a category…</option>
-    @for (cat of categories; track cat) {
-    <option [value]="cat">{{ cat }}</option>
-    }
-  </select>
+          maxlength="200"
+          #titleCtrl="ngModel"
+        />
+        @if (titleCtrl.invalid && titleCtrl.touched) {
+        <p class="field-error">Title is required (max 200 characters).</p>
+        }
+      </div>
 
-  @if (errorMessage()) {
-  <p class="form-error">{{ errorMessage() }}</p>
-  }xs
+      <div class="field">
+        <label class="field-label" for="description">Description</label>
+        <textarea id="description"
+                  placeholder="What happened, what you expected, and anything you already tried&hellip;"
+                  [(ngModel)]="description"
+                  name="description"
+                  required
+                  #descriptionCtrl="ngModel"
+        ></textarea>
+        @if (descriptionCtrl.invalid && descriptionCtrl.touched) {
+        <p class="field-error">Description is required</p>
+        }
+      </div>
 
-  <button type="submit" [disabled]="form.invalid">Create ticket</button>
-</form>
+      <div class="field">
+        <label class="field-label" for="category">Category</label>
+        <span class="select-wrap">
+          <select id="category"
+                  [(ngModel)]="category"
+                  name="category"
+                  required
+          >
+            <option value="" disabled>Choose a category…</option>
+            @for (cat of categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+            }
+          </select>
+          <span class="select-caret" aria-hidden="true">&#9662;</span>
+        </span>
+      </div>
+
+      @if (errorMessage()) {
+      <p class="form-error">{{ errorMessage() }}</p>
+      }
+
+      <div class="create-actions">
+        <a class="cancel-link" routerLink="/tickets">Cancel</a>
+        <button class="submit-btn" type="submit" [disabled]="form.invalid">Create ticket</button>
+      </div>
+    </div>
+  </form>
+</div>

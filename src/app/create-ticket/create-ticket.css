@@ -1,0 +1,269 @@
+/* ---- Page ---- */
+.create-page {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 24px 16px 56px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto 14px;
+  max-width: 620px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--color-ink);
+}
+
+.back-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---- The sheet ---- */
+.create-card {
+  display: block;
+  max-width: 620px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.create-cap {
+  background: var(--color-accent-soft);
+  border-bottom: 1px solid var(--color-accent-line);
+  padding: 15px 24px;
+}
+
+.create-heading {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-accent-strong);
+}
+
+.create-body {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---- Fields ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-strong);
+}
+
+.field-count {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-muted);
+}
+
+.create-body input,
+.create-body textarea,
+.create-body select {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-ink);
+  background: var(--color-page);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 11px 13px;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.create-body textarea {
+  min-height: 128px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.create-body input::placeholder,
+.create-body textarea::placeholder {
+  color: var(--color-muted);
+}
+
+.create-body input:focus,
+.create-body textarea:focus,
+.create-body select:focus {
+  outline: none;
+  background: var(--color-surface);
+  border-color: var(--color-accent-line);
+  box-shadow: 0 0 0 3px var(--color-accent-soft);
+}
+
+/* ---- Select ---- */
+.select-wrap {
+  position: relative;
+  display: block;
+}
+
+.create-body select {
+  appearance: none;
+  padding-right: 34px;
+}
+
+.create-body select:invalid {
+  color: var(--color-muted);
+}
+
+.select-caret {
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
+/* ---- Invalid, once the control has been touched ---- */
+.create-body input.ng-invalid.ng-touched,
+.create-body textarea.ng-invalid.ng-touched,
+.create-body select.ng-invalid.ng-touched {
+  border-color: var(--color-software);
+  box-shadow: 0 0 0 3px var(--color-software-soft);
+}
+
+.field:has(.ng-invalid.ng-touched) .field-label {
+  color: var(--color-software);
+}
+
+.field-error {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-software);
+}
+
+.form-error {
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-software);
+  background: var(--color-software-soft);
+  border: 1px solid var(--color-software-line);
+}
+
+/* ---- Footer ---- */
+.create-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+}
+
+.cancel-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.cancel-link:hover {
+  color: var(--color-ink);
+}
+
+.cancel-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-surface);
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  border-radius: 10px;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: var(--color-accent-strong);
+  border-color: var(--color-accent-strong);
+}
+
+.submit-btn:disabled {
+  color: var(--color-muted);
+  background: var(--color-border);
+  border-color: var(--color-border);
+  cursor: not-allowed;
+}
+
+.submit-btn:focus-visible {
+  outline: 2px solid var(--color-accent-strong);
+  outline-offset: 2px;
+}
+
+/* ---- Narrow screens ---- */
+@media (max-width: 720px) {
+  .create-body {
+    padding: 20px 18px;
+  }
+
+  .create-cap {
+    padding: 14px 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-link,
+  .cancel-link,
+  .submit-btn,
+  .create-body input,
+  .create-body textarea,
+  .create-body select {
+    transition: none;
+  }
+}
