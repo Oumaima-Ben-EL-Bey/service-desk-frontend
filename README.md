@@ -1,59 +1,59 @@
-# ServiceDeskFrontend
+# Service Desk
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.7.
+A full-stack IT service desk: log in, see role-scoped tickets, work them through their lifecycle
+(claim, change status, assign, comment), and create new ones. Angular frontend, Spring Boot API.
 
-## Development server
+### 🔗 Live demo — https://service-desk-demo.netlify.app
 
-To start a local development server, run:
+## Try it (demo logins)
 
-```bash
-ng serve
-```
+All accounts share the password **`password123`**. Log in as different roles to see the app change:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Email | Role | What you'll see |
+|---|---|---|
+| `admin@servicedesk.local` | **Admin** | Every ticket; can assign tickets to any agent |
+| `agent@servicedesk.local` | **Agent** (Network team) | The team's tickets; can claim, comment, change status |
+| `requester@servicedesk.local` | **Requester** | Only their own tickets; can create and comment |
 
-## Code scaffolding
+More seeded agents (`agent.hw@`, `agent.access@`, `agent.sw@`) and requesters (`sofia.klein@`,
+`jonas.weber@`) exist on other teams — same password.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+> The demo database **resets to this fixed dataset every night** (03:00 UTC), so feel free to click
+> around, change statuses, and post comments — nothing you do sticks or breaks it for the next visitor.
 
-```bash
-ng generate component component-name
-```
+## Features
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **JWT auth** — log in, token stored client-side and sent on every request; logout discards it.
+- **Role-scoped ticket list** — admins see all, agents see their team's, requesters see their own.
+  Client-side filtering and sorting.
+- **Ticket detail** — full ticket, its comment thread, and role- & state-gated actions (claim,
+  status transitions limited to legal ones, admin-only assignment, commenting).
+- **Create ticket** — with both client-side and server-side validation.
+- **Registration** and a "logged in as ___" identity label.
 
-```bash
-ng generate --help
-```
+## Tech stack
 
-## Building
+**Frontend** (this repo): Angular 22 (standalone, **zoneless** — state via signals), TypeScript,
+RxJS. Built to static files with `ng build` and hosted on **Netlify**; SPA deep-link routing via a
+`_redirects` fallback.
 
-To build the project run:
+**Backend** ([service-desk-api](https://github.com/Oumaima-Ben-EL-Bey/service-desk-api)): Spring Boot,
+Spring Security (JWT), JPA, Flyway, PostgreSQL. Deployed on **Fly.io** with a **Neon** Postgres
+database; CI/CD via GitHub Actions (auto-deploy on merge to `main`, plus a nightly reseed job).
 
-```bash
-ng build
-```
+The two services run on separate origins, wired together with CORS.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## Run it locally
 
 ```bash
-ng e2e
+npm install
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Opens on `http://localhost:4200`. The app talks to the deployed API, so login and data work out of
+the box — no local backend needed.
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm run build   # production build → dist/service-desk-frontend/browser/
+npm test        # unit tests (Vitest)
+```
