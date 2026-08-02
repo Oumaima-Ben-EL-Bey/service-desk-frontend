@@ -23,17 +23,34 @@
 
       <div class="field">
         <label class="field-label" for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" required email />
+        <input type="email" id="email" [(ngModel)]="email" name="email" required email #emailCtrl="ngModel" />
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+        @if (emailCtrl.errors?.['required']) {
+        <p class="field-error">Email is required.</p>
+        } @else if (emailCtrl.errors?.['email']) {
+        <p class="field-error">Enter a valid email address.</p>
+        }
+        }
       </div>
 
       <div class="field">
         <label class="field-label" for="fullName">Full name</label>
-        <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" required />
+        <input type="text" id="fullName" [(ngModel)]="fullName" name="fullName" required #fullNameCtrl="ngModel"/>
+        @if (fullNameCtrl.invalid && fullNameCtrl.touched) {
+        <p class="field-error">Full name is required.</p>
+        }
       </div>
 
       <div class="field">
         <label class="field-label" for="password">Password</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" required minlength="8" />
+        <input type="password" id="password" [(ngModel)]="password" name="password" required minlength="8" #passwordCtrl="ngModel" />
+        @if (passwordCtrl.invalid && passwordCtrl.touched) {
+        @if (passwordCtrl.errors?.['required']) {
+        <p class="field-error">Password is required.</p>
+        } @else if (passwordCtrl.errors?.['minlength']) {
+        <p class="field-error">Password must be at least 8 characters.</p>
+        }
+        }
       </div>
 
       @if (errorMessage()) {

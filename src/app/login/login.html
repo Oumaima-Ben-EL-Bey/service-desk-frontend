@@ -15,7 +15,7 @@
   </aside>
 
   <main class="auth-main">
-    <form class="auth-form" (ngSubmit)="onLogin()">
+    <form class="auth-form" (ngSubmit)="onLogin()" #form="ngForm">
       <div class="auth-head">
         <h1 class="auth-heading">Log in</h1>
         <p class="auth-sub">Use your work email address.</p>
@@ -23,19 +23,29 @@
 
       <div class="field">
         <label class="field-label" for="email">Email</label>
-        <input type="email" id="email" [(ngModel)]="email" name="email" />
+        <input type="email" id="email" [(ngModel)]="email" name="email" required email #emailCtrl="ngModel" />
+        @if (emailCtrl.invalid && emailCtrl.touched) {
+        @if (emailCtrl.errors?.['required']) {
+        <p class="field-error">Email is required.</p>
+        } @else if (emailCtrl.errors?.['email']) {
+        <p class="field-error">Enter a valid email address.</p>
+        }
+        }
       </div>
 
       <div class="field">
         <label class="field-label" for="password">Password</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" />
+        <input type="password" id="password" [(ngModel)]="password" name="password" required #passwordCtrl="ngModel"/>
+        @if (passwordCtrl.invalid && passwordCtrl.touched) {
+        <p class="field-error">Password is required.</p>
+        }
       </div>
 
       @if (errorMessage()) {
       <p class="form-error">{{ errorMessage() }}</p>
       }
 
-      <button class="auth-submit" type="submit">Log in</button>
+      <button class="auth-submit" type="submit" [disabled]="form.invalid">Log in</button>
 
       <p class="auth-alt">Need an account? <a routerLink="/register">Register</a></p>
     </form>

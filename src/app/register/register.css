@@ -167,6 +167,13 @@
   box-shadow: 0 0 0 3px var(--color-hardware-soft);
 }
 
+.field-error {
+  margin: 2px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-software);
+}
+
 .form-error {
   margin: 0;
   padding: 12px 16px;
