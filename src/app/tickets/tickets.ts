@@ -5,12 +5,13 @@ import { RouterLink } from '@angular/router';
 import { Users } from '../users';
 import { Ticket } from '../models';
 import { StatusLabelPipe } from '../status-label-pipe';
+import { DatePipe } from '@angular/common';
 
 
 
 @Component({
   selector: 'app-tickets',
-  imports: [RouterLink, StatusLabelPipe],
+  imports: [RouterLink, StatusLabelPipe, DatePipe],
   templateUrl: './tickets.html',
   styleUrl: './tickets.css',
 })
@@ -21,7 +22,7 @@ export class Tickets implements OnInit {
 
   tickets = signal<Ticket[]>([]);
   statusFilters = ['ALL', 'NEW', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'];
-  sortDirection = signal<'asc' | 'desc'>('asc');
+  sortDirection = signal<'asc' | 'desc'>('desc');
   selectedStatus = signal<string>('ALL');
   loading = signal(true);
   loadFailed = signal(false);
@@ -38,7 +39,7 @@ export class Tickets implements OnInit {
     const direction = this.sortDirection();
     const list = [...this.visibleTickets()];
     return list.sort((a, b) => {
-      const comparison = a.title.localeCompare(b.title);
+      const comparison = a.createdAt.localeCompare(b.createdAt);
       return direction === 'asc' ? comparison : -comparison;
     });
   });

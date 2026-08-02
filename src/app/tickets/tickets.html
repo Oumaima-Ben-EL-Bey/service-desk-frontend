@@ -18,7 +18,7 @@
       (click)="sortDirection.set(sortDirection() === 'asc' ? 'desc' : 'asc')"
     >
       Sort:
-      <span class="sort-value">Title {{ sortDirection() === 'asc' ? 'A-Z' : 'Z-A' }} &#9662;</span>
+      <span class="sort-value">{{ sortDirection() === 'desc' ? 'Newest' : 'Oldest' }} first &#9662;</span>
     </button>
   </div>
   <div class="filter-bar">
@@ -49,8 +49,7 @@
         <span class="ticket-id">#{{ ticket.id }}</span>{{ ticket.title }}
       </h3>
       <p class="ticket-desc">{{ ticket.description }}</p>
-      <p class="ticket-meta">Requested by {{ users.nameFor(ticket.requesterId) }}</p>
-    </div>
+      <p class="ticket-meta">Requested by {{ users.nameFor(ticket.requesterId) }} · {{ ticket.createdAt | date: 'd MMM' }}</p>    </div>
     <div class="ticket-side">
           <span class="status">
             <img class="status-icon" [src]="statusIcon(ticket.status)" alt="" />
