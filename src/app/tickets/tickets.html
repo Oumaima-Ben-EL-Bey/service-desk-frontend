@@ -32,7 +32,7 @@
       @if (status !== 'ALL') {
       <img class="chip-dot" [src]="statusIcon(status)" alt="" />
       }
-      {{ status }}
+      {{ status | statusLabel }}
       <span class="chip-count">{{ countFor(status) }}</span>
     </button>
     }
@@ -54,7 +54,7 @@
     <div class="ticket-side">
           <span class="status">
             <img class="status-icon" [src]="statusIcon(ticket.status)" alt="" />
-            {{ ticket.status }}
+            {{ ticket.status | statusLabel }}
           </span>
       <span [class]="'pill cat-' + ticket.category.toLowerCase()">
             <img class="category-icon" [src]="categoryIcon(ticket.category)" alt="" />

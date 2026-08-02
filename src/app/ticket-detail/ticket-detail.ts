@@ -6,6 +6,7 @@ import { Auth } from '../auth';
 import { FormsModule } from '@angular/forms';
 import { Users } from '../users';
 import { Ticket, Comment } from '../models';
+import { StatusLabelPipe } from '../status-label-pipe';
 
 const STATUS_TRANSITIONS: Record<string, string[]> = {
   NEW: ['IN_PROGRESS', 'RESOLVED', 'CLOSED'],
@@ -16,7 +17,7 @@ const STATUS_TRANSITIONS: Record<string, string[]> = {
 
 @Component({
   selector: 'app-ticket-detail',
-  imports: [FormsModule, RouterLink, DatePipe],
+  imports: [FormsModule, RouterLink, DatePipe, StatusLabelPipe],
   templateUrl: './ticket-detail.html',
   styleUrl: './ticket-detail.css',
 })

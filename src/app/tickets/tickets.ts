@@ -4,12 +4,13 @@ import { Auth } from '../auth';
 import { RouterLink } from '@angular/router';
 import { Users } from '../users';
 import { Ticket } from '../models';
+import { StatusLabelPipe } from '../status-label-pipe';
 
 
 
 @Component({
   selector: 'app-tickets',
-  imports: [RouterLink],
+  imports: [RouterLink, StatusLabelPipe],
   templateUrl: './tickets.html',
   styleUrl: './tickets.css',
 })
