@@ -17,8 +17,7 @@
         <span class="status-hero-dot"></span>
         <span class="status-hero-text">
           <span class="micro-label">Status</span>
-          <span class="status-hero-value">{{ t.status }}</span>
-        </span>
+          <span class="status-hero-value">{{ t.status | statusLabel }}</span>        </span>
       </div>
     </div>
     <div class="band-actions">
@@ -28,7 +27,7 @@
       @for (target of allowedStatuses(); track target) {
       <button class="pipe-row" type="button" [attr.data-target]="target" (click)="changeStatus(target)">
         <span class="pipe-dot"></span>
-        <span class="pipe-name">{{ target }}</span>
+        <span class="pipe-name">{{ target | statusLabel }}</span>
         <svg class="pipe-arrow" width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
           <path d="M2.6 7h8.8M7.8 3.4 11.4 7l-3.6 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -94,6 +93,9 @@
     </article>
     } @empty {
     <p class="comment-empty">No comments yet.</p>
+    }
+    @if (commentError()) {
+    <p class="form-error">{{ commentError() }}</p>
     }
     <form class="comment-form" (ngSubmit)="addComment()">
       <textarea [(ngModel)]="newComment" name="newComment" placeholder="Write a comment&hellip;"></textarea>
