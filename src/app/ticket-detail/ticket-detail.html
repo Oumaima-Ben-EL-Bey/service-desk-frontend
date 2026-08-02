@@ -94,6 +94,9 @@
     } @empty {
     <p class="comment-empty">No comments yet.</p>
     }
+    @if (commentError()) {
+    <p class="form-error">{{ commentError() }}</p>
+    }
     <form class="comment-form" (ngSubmit)="addComment()">
       <textarea [(ngModel)]="newComment" name="newComment" placeholder="Write a comment&hellip;"></textarea>
       <button type="submit">Send</button>

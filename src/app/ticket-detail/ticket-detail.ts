@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DatePipe } from '@angular/common';
@@ -31,6 +31,7 @@ export class TicketDetail implements OnInit {
   comments = signal<Comment[]>([]);
   ticketId: string | null = null;
   newComment = '';
+  commentError = signal('');
   selectedAgentId: number | null = null;
   errorMessage = signal('');
   loading = signal(true);
@@ -63,7 +64,7 @@ export class TicketDetail implements OnInit {
   }
 
   addComment() {
-    this.errorMessage.set('');
+    this.commentError.set('');
     this.http
       .post<Comment>(
         `https://service-desk-api.fly.dev/tickets/${this.ticketId}/comments`,
@@ -75,7 +76,7 @@ export class TicketDetail implements OnInit {
           this.comments.update((list) => [...list, created]);
           this.newComment = '';
         },
-        error: (err) => this.showError(err),
+        error: (err) => this.showError(err, this.commentError),
       });
   }
 
@@ -126,17 +127,17 @@ export class TicketDetail implements OnInit {
       });
   }
 
-  private showError(err: HttpErrorResponse) {
+  private showError(err: HttpErrorResponse, target: WritableSignal<string> = this.errorMessage) {
     if (err.status === 400) {
-      this.errorMessage.set('Please check your input and try again.');
+      target.set('Please check your input and try again.');
     } else if (err.status === 403) {
-      this.errorMessage.set("You don't have permission to do that.");
+      target.set("You don't have permission to do that.");
     } else if (err.status === 404) {
-      this.errorMessage.set('That item no longer exists.');
+      target.set('That item no longer exists.');
     } else if (err.status === 409) {
-      this.errorMessage.set("That action isn't allowed right now.");
+      target.set("That action isn't allowed right now.");
     } else {
-      this.errorMessage.set('Something went wrong. Please try again.');
+      target.set('Something went wrong. Please try again.');
     }
   }
 }
