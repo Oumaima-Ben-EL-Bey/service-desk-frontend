@@ -1,11 +1,43 @@
-<form (ngSubmit)="onLogin()">
-  <label for="email">Email</label>
-  <input type="email" id="email" [(ngModel)]="email" name="email" />
-  <label for="password">Password</label>
-  <input type="password" id="password" [(ngModel)]="password"  name="password" />
-  <button type="submit">Log in</button>
-  @if (errorMessage()) {
-  <p class="form-error">{{ errorMessage() }}</p>
-  }
-  <a routerLink="/register">Need an account? Register</a>
-</form>
+<div class="auth-page">
+  <aside class="auth-panel">
+    <div class="auth-panel-top">
+      <span class="auth-eyebrow">IT Service Desk</span>
+      <h2 class="auth-panel-heading">One place to report anything that's broken.</h2>
+    </div>
+    <div class="auth-panel-bottom">
+      <span class="auth-eyebrow">How it works</span>
+      <ul class="auth-steps">
+        <li class="auth-step"><img class="auth-step-dot" src="/status/dot-new.svg" alt="" />Describe the problem</li>
+        <li class="auth-step"><img class="auth-step-dot" src="/status/dot-in-progress.svg" alt="" />An agent picks it up</li>
+        <li class="auth-step"><img class="auth-step-dot" src="/status/dot-resolved.svg" alt="" />You're told when it's fixed</li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="auth-main">
+    <form class="auth-form" (ngSubmit)="onLogin()">
+      <div class="auth-head">
+        <h1 class="auth-heading">Log in</h1>
+        <p class="auth-sub">Use your work email address.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Email</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email" />
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" />
+      </div>
+
+      @if (errorMessage()) {
+      <p class="form-error">{{ errorMessage() }}</p>
+      }
+
+      <button class="auth-submit" type="submit">Log in</button>
+
+      <p class="auth-alt">Need an account? <a routerLink="/register">Register</a></p>
+    </form>
+  </main>
+</div>
