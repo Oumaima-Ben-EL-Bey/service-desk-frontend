@@ -6,6 +6,8 @@ export interface Ticket {
   category: string;
   requesterId: number;
   assigneeId: number | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Comment {
